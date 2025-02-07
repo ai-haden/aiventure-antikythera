@@ -1,0 +1,11 @@
+﻿=====
+
+A list of gear trains, given Freeth (2012). In order by input crown gear to display gear.
+
+=====
+
+MOON GEARS
+
+A1, B1, B2, C1, C2, D1, D2, E2, E1, B3 [ POSITION ] ==> B0, Q1 (MB1, MB2) [ PHASE ].
+
+=====

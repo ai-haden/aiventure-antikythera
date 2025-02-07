@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D2FA45D-9139-4605-AA17-3F0738EDB3CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FormControls</RootNamespace>
+    <AssemblyName>FormControls</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnalogMeter\LbAnalogMeter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnalogMeter\LbAnalogMeter.Designer.cs">
+      <DependentUpon>LbAnalogMeter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnalogMeter\MeterRenderer.cs" />
+    <Compile Include="Circle\CircleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\CircleControl.Designer.cs">
+      <DependentUpon>CircleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circle\Collection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\Marker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\MarkerSet.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\Ring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\RingCollection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\TextItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Circle\TextItemCollection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dials\Sundial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dials\Sundial.Designer.cs">
+      <DependentUpon>Sundial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dials\SundialRenderer.cs" />
+    <Compile Include="Dials\SundialThreshold.cs" />
+    <Compile Include="Items\KnobRenderer.cs" />
+    <Compile Include="Items\Knob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Items\Knob.Designer.cs">
+      <DependentUpon>Knob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Items\Dial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Items\Dial.Designer.cs">
+      <DependentUpon>Dial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Items\DialThreshold.cs" />
+    <Compile Include="Items\DialRenderer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ColorManager.cs" />
+    <Compile Include="Utilities\Functions.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Items\Knob.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dials\Sundial.resx">
+      <DependentUpon>Sundial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Items\Knob.resx">
+      <DependentUpon>Knob.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,8 @@
+OutputScalar	0.2064714946070878
+OutputScalar	0.2064714946070878
+OutputScalar	0.20955315870570104
+
+
+presentChordLength = 1.7802358370342162
+
+tooth height = 1.122

@@ -1,0 +1,300 @@
+﻿The soft reproduction of the Antikythera Mechanism to determine its operational algorithm. The matter is to determine not only the how, but the why.
+
+Begun 03.07.2012.
+
+22.07.2012: Currently the project encapsulates 31 gears (of a total of 37 speculated).
+	1808: The classes have contained the gears. Now to build an understanding of how a gear motion would be "simulated".
+23.07.2012: With the objects in place, now to determine how they work together.
+	924: Having gotten the classes worked out and a means to determine the ratio of movements between one gear and the next,
+		I am going to take an example of a gear train and see how it can be represented in code. 
+	950: Will start with the Sun gear.
+	1131: Having issues with visualizing the mathematical functions of the turning gears. I will need a framework. Giving this some thought.
+24.07.2012: Have expanded the project.
+	1926: Have found some dials that can be a starting point to represent the dials on the face of the mechanism. I'm content with their
+		behavior at present, and will move along to working out the gear ratios leading to the dial faces.
+26.07.2012: An interesting error is appearing in the code.
+	929: When I calculate gear dimensions in the winform, as doubles, I am getting x10 and x100 calculation errors, which I speculate are rounding.
+		In the test methods, I am encapsulating the dimensions as part of the Gear object, and the values are appearing correctly. Keep to encapsulation 
+		for safety until there is time to investigate what the matter is.
+	931: Coffee time!
+	1535: Having coded the moon train gears and running the first test, it is interesting to note that with one turn on the input gear results in 2.864 
+		Moon rotations on the front dial. I am wondering if there is a deeper significance to this dynamic.
+	1627: Have found a June 2012 paper on exact engineering specifications on the mechanism. Have printed it and will read it this evening. In the meanine,
+		let's set the gear train I have programmed into motion using the time classes.
+27.07.2012: Played late into the night with an analog clock as a base for the moon display.
+	924: Although successful, there is a lot of flickering in the drawing. I will need to shape an understanding how the drawing classes work.
+		Today I am focusing on the algorithm given the paper I downloaded yesterday containing correct gear information. Turns out the Freeth et. al.
+		model I've been working with did not yield a working model. Interesting.
+	944: I will be adding a correction to the gears, plus adding more (projected) gears based on the paper by Efstathiou et. al. (appearing in:
+		Mechanism and Machine Theory, Volume 52, June 2012, Pages 219–231). For the purposes of the paper to be written on this topic, I will use their 
+		data as a means to determine the algorithm. I am not sure how to handle Freeth et. al since their projections were incorrect.
+	949: I see the factor of circular pitch is not in the paper, rather, the tip radius of the gears are given. I think a check of the calculation vs. the data
+		is interesting.
+	953: Circular pitch is now called chord length; e.g., from the start of one tooth to the next successive one.
+	958: I have an equation for chord length from page 222 which is given as a function of the number of teeth and tip radius (the outside radius of the gear). 
+		I will run a check if my numbers match these.
+	1047: In testing the numbers, here is the Assert result: {"Assert.AreEqual failed. Expected:<452>. Actual:<407,765358241562>. "}, using a CP of 2. Diff = 44.3.
+		Using a CP of 1.6, like the other gears: {"Assert.AreEqual failed. Expected:<361,6>. Actual:<407,765358241562>. "}, Diff = 46.1.
+		So there is significant error in my method.
+	1053: Running a simple circumference equation shows a match with the figure calculated from the paper.
+		{"Assert.AreEqual failed. Expected:<407,765358241562>. Actual:<407,778726435955>. "}, Diff = 0.013368194393. Using a smaller approximation for Pi, based on the 
+		technology of the time, would narrow the gap--not really.
+		Therefore, the arclength method I devised is incorrect. The values from the paper check out.
+	1104: Am placing a delta value (tolerance) of 0.2, in alignment with the tolerances listed in Table 1 of the paper.
+	1109: Need now to change the rest of the Gear classes to match that of B1.
+	1625: I have updated and input the full compendium of gears based on the listings in Table 1, 3, and 10 in the paper. What is interesting from the algorithm point-of-view 
+		is the influence (confluence) of the gear tolerances to the accuracy of the predictions.
+	1627: Understanding now that A1 gear is a crown gear, I will start the motion on the B1 gear and input the crown-specifics at a later time.
+		Now I can resume with the tests to see how the value is different from the first one I calculated.
+06.08.2012: Separating the project so I can sort the representation of the scheme.
+	1012: Will begin with the first coding scheme and work from there.
+	1019: Have arrived where the base class absorbs the properties from each derived instance.
+	1024: Have run it up and see that it is functioning as I would expect it to. Hmm........
+	1026: I see that the arguments at the constructor are different than in the other code. I was implicity adding the properties where 
+		here I added them explicity. Also, I have eliminated the second constructor in the derived class.
+	1028: Each instance of the derived gear can now be only a code file 15-lines long, inlcuding documentation.
+	1054: Now that the code is performing the correct representation, will try to discover the correctness of the rotation calculation.
+	1055: When using gears of the exact dimensions, the calculation is returning zero, when it should return one.
+	1056: What about returning the displacement? For equivalent gears, it should be the same as the input rotation.
+	1057: By removing the quantity of the input rotation distance, I am now getting a correct output rotation value for the second gear.
+	1107: Sanity check passes! :-)
+	1108: Documented and clean code. What's next on this truly phenomenal rover-inspired day?
+	1441: Now checking the gear parameters, that I can trust the values input for each gear. The number of teeth to chord length, as published 
+		by Freeth, are incorrect given a raw calculation. How much? By 1.64. So what is the correct value given the geometric parameters?
+	1450: Separation error is over 1.6, far greater than the accepted Delta of 0.2. Added correction. The value is 1.6525 which is just a few more 
+		decimal places resolution of the gear geometry.
+	1455: All tests pass. Now I have my own geometrical checks for the gears. What now about the calibration gear set? I think I will include it here since 
+		the original project is quite a mess, adding things here slowly.
+	1500: Am deleting ALL calibration gears and starting fresh.
+	1501: Will add "name" property back into the constructor code.
+	1504: Must thinking now about the tolerance properties, which are important to record.
+	1511: Leaving the nomenclature in this version for the values and tolerances. Perhaps there is a more sexy way to be discovered. Nevertheless, the method is sound?
+	1514: Yes, it is. However, I do not think presently I require the tolerance nor the inner radius values. Perhaps in a later version.
+	1520: Added two more gears with different sizes and checks still pass! Now onto the first train.
+07.08.2012: Splitting time at the office to allow development of this uhoo one. I must also focus on planning for Uhoo 2.
+	814: Beginning where I left off yesterday.
+	856: Starting with writing the initial gear train test.
+	858: The input number is a function of the rotation of the first gear. The actual number will be a function of turn = movement / 360 (in degrees).
+	913: Setting the chord length of all gears, except A1 and B1, to the correction value of 1.6525.
+	917: Gear train has been refactored. Coffee break!
+	930: Will perform a geometry check to see if the values for the calibration gears match internally before linking the train.
+	946: Problem has repeated, issue is with TipRadius.Value being a static class.
+	955: Problem sorted. Is functioning as expected.
+	956: Adjusting the chord length of B1, as it is off by 20 teeth (203) using the Freeth value.
+	957: Now is 246. Is there a sliding scale to set the proper chord length?
+	959: By performing the chord length check first, the proper value, given the geometric parameters is set. The value is 1.8286.
+	1000: Because of the accuracy of the representation and cross-checking, resetting the delta to 0.01.
+	1015: Adding extra classes for gears with a disparity of teeth.
+	1018: Also changing any disparate gears to their tooth-count value.
+	1019: The B2 gear has two other possible values as well.
+	1043: Have duplicated the multiple disparity gears and have adjusted chord lengths. What is the assumption is that since these are handmade, the 
+		"priority" in the design is the number of teeth, given the need to calculate based on angular displacement. This is my argument here.
+	1044: All geometry tests pass.
+	1411: After donig something for the office, tried to attack the train rotation, as in the first project. Will start with a calibrated rotation first.
+	1449: Wrote up the calibration displacement vectors, works with same and differently sized gears at ratios. I also see how the output number is generated!
+	1451: Test now fails for smaller-sized gear.
+	1512: I've set up a calibration train and am seeing regular patterns of numbers, although at this time I'm not sure what they represent wholistically.
+	1618: Have gotten the calibrated chaining working and now considering a separate class to hold the values during runtime.
+	1627: Storing the rotations on the class object so if the dial indicator needs to attach and display the movement from a point (or previous point).
+	1642: The test method "TrainFourGears()" is really getting to the representation I was first thinking about. How about connecting a runtime?
+	1728: Should a class be constructed to hold data during runtime?
+	1747: Attaching the runtime in the form of one second per degree rotation is an interesting series of thoughts!
+	1755: This is some heavy thinking!
+	1807: Have started working out the Time class-based runtime.
+09.08.2012: Took a day break from the code.
+	1054: Working on the Time class. I see right away the need for inheriting the DateTime class and delegates for the time ticking.
+	1058: Since cannot inherit the sealed class, using the nomenclature divisions in the Time constructor. What about boxing?
+	1329: Working now on the runtime simulation. If I create a loop with a specified period, I can see how the clock ticks (and how the calibration 
+		gears move).
+	1502: Have gotten a tick mechanism to work as a winform. Will need to sort thread-locking if I want to continue using this. Just a prototype for now.
+	1810: Spent most of the afternoon on delegate callbacks like I did for ForexTimeSeries. Setup but not working. Will take the working code 
+		and apply gear turning.
+	1900: The data layout in the program is taking shape very nicely!
+	2107: Have gotten close to getting the time connected to gears, it is a complicated exercise adding dynamics to an otherwise static set of procedures.
+10.08.2012: See how far I can get the calibration gears turning, displayed in an applciation layer.
+	907: Splitting time again today with office coding duties.
+	1609: Work laptop crashed today, now at home until Tuesday. :-)
+	2305: Not much done today.
+13.08.2012: Working from home today. Spent the morning working on the storyboard and cad concepts for the WP projects.
+	1535: Was wondering about leaving the time component. Interesting thought while in a cave that the Moon train solely by itself will not be able to 
+		display contextual data. The sun gear will be required for that. Means more gears need to be employed and maybe the sun gear to the time component 
+		could be a good idea to contrast the runtime with the solar cycles, as proof I mean.
+	1538: I see I left off with the addition of a textbox for "Gear output degrees".
+	1557: Resharper is helping with some of my more silly coding errors.
+	1558: What about the writing of the paper? At what point should the document take shape?
+	1559: For the moon and sun train in terms of calibration, a set of equal number-matching gears should architected using easy-to-see ratios. This will 
+		build-in an accuracy of the scheme.
+15.08.2012: A rare treat to have a (work) holiday today. Will spend the time working here.
+	919: What is the end game and how quickly can I get there?
+	1156: Have spent the morning working on the Word document of the paper. It is aligned with the code ambitions and needs to have the first two steps written:
+		1. Class mimics gear,
+		2. Calibration establishes truth.
+	1201: I get the sense that the character Uncler is lurking around this "philosophy of time" notion through Western technological and scientific history.
+	1228: Working on the "hand-crank" notion of the movement of gears instead of time.
+	1310: Have cleaned and refactored and made more sharpness in the code.
+	1321: I see in the tests, since I have introduced a storing of the methods execution, I will have to sequentially denote each gear and create new instances to 
+		properly store the entire movement.
+	1401: Now trying to sort what the output scalar should be. If I enter 1/2, is the output a function of the input rotation/input or rotation / 360?
+	1403: Probably the latter since the input is derived from 180/360
+	1418: OutputScalar is incorrect: is a function of ratio * input, or something else.
+	1421: Perplexing thoughts at hand! Break time.
+	1424: The thought is: when you input a (number), as a function of turning a handle, what is the output (number) of a particular train?
+	1444: Have remedied the issue. It is a ratio as a function of the circumference of the SECOND object.
+	1456: Got it working for two gears, but some issues with more gears than 2. Especially how final number is a function of the displacement vs circuference.
+	1457: I could be seeing it correctly, but not recognizing it. Like probability and statistical phenomenon.
+	1458: Really, break time now!
+	1503: After a small bit of pacing and reflection, I think it is functioning correctly. :-) I am interesting in the number of turns of a given final gear that
+		is connected to a dial indicator. And I think I have it now. At least enough to continue on.
+	1728: Back here after feeling green.
+	1745: Snapshot of code to paper. Next step is to get to a similar train as the real and model an output. Maybe port to mobile for functional check?
+	1825: Have assembled a test for the three gears represented in the sun (gear and indicator drive) and date dial indicator.
+	1827: Upon closer examination, gears missing for date indicator on the face. Can only test the sun gear and indicator. Is this the time-base?
+	1953: Have set a revised chord length method so that the checks for the A1 gear pass. Chord length is off by 0.311mm.
+	1958: Code is excitingly cool! Have achieved a ratio for the sun gear. What about Price's mention of time (calendar) calibration/reference?
+16.08.2012: Back at the office today.
+	1813: Found an error in the AngularPosition.Movement which is affecting the Degree.Movement property as well. Needs to be corrected.
+17.08.2012:
+	1713: Here on a Friday to see what I can do.
+	1742: I see a problem using data from the source: how can two meshing gears not slip over n-rotations with a differing chord length?
+		Why would a designer with engineers using hand-tools, design different chord lengths on meshing gears? I think he wouldn't. 
+		Working hypothesis for my paper on these corrections: Rather, for compensation, make a meshing gear larger or smaller with increased or decreased tooth count.
+	1801: Since the rotation is unchanged, will need a check if the geometry is correct.
+	1829: Storing the corrected values as to give a contrast of this data generated and the published works.
+	1839: Made a note about assumptions in the data and tooth count / radius / chord length disagreements.
+	1857: Having a grand time connecting the gears together! But now must go fetch some food.
+	1858: Need to create next sets of gears to follow the train.
+18.08.2012: Planned to write more on the flyer which is mailed Tuesday at lunch. No mood presently, here instead.
+	953: Will create a List<Gear> objects to pass into the geometric checks and turning methods. Better than building so many with overloads.
+	1031:Back from breakfast.
+	1048: Will assume that gears a1 and b1 represent the flow of a solar year. Will also assume the unit was driven by an external source, though, not necessarily a 
+		handle for human hand. Could have been driven by water in a timing apparatus. Therefore, "turning" the handle (gear a1) at some rate of degrees (radians) per second will 
+		mimic the movement of the sun through the year. This would mean the apparatus turns slowly on this dial.
+		A starting value of one tooth per second? A starting value of one degree per second?
+	1057: Have decided in this iteration to only go to the lower left of the Freeth gear figure maps. Eclipse difficult, moon movement extremely detailed. Synchronize the solar 
+		movements with a set of calendar references, trimming one off at the end, if necessary for clarity.
+	Calendar details:
+		1. Callippic calendar is: In astronomy and calendar studies, the Callippic cycle (or Calippic) is a particular approximate common multiple of the year (specifically the 
+			tropical year) and the synodic month, that was proposed by Callippus in 330 BC. It is a period of 76 years, as an improvement on the 19-year Metonic cycle.
+		2. Olympiad calendar is: Indication of four ancient competing games, one of them being Olympia.
+		3. Metonic x5 calendar is: In astronomy and calendar studies, the Metonic cycle or Enneadecaeteris (from Greek words for nineteen years) is a period of very close to 19 years 
+			which is remarkable for being very nearly a common multiple of the solar year and the synodic (lunar) month. The Greek astronomer Meton of Athens observed that a period of 
+			19 years is almost exactly equal to 235 synodic months, and rounded to full days counts 6940 days. The difference between the two periods (of 19 years and 235 synodic 
+			months) is only a few hours, depending on the definition of the year. Taking a year to be 1⁄19 of this 6940-day cycle gives a year length of 365 + 1⁄4 + 1⁄76 days (the 
+			unrounded cycle is much more accurate), which is slightly more than 12 synodic months. To keep a 12-month lunar year in pace with the solar year, an intercalary 13th month 
+			would have to be added on seven occasions during the nineteen-year period (235 = 19 × 12 + 7).
+	1112: Having defined the calendar components and the ambition of the moving gears during experimental testing, I am now including those gears into the series an exculding those 
+		not used in this cycle.
+	1152: All gears have been added to the project and data cleaned to match source [2]. Have created the list object, now need to parse it through the geometric and train methods.
+	1155: Project is organized very well now.
+	1209: List is functioning and geometry computation functions. Now to sort how the gear movement will flow.
+	1253: It seems to me the iteration and processing of conjunctive gear ratios is more difficult than I imagined and requires more thinking.
+	1254: I think I will organize the remainder of the library based on the diagram to complete the library totally.
+	1341: Library is done now, go ahead and code away!
+	1408: In looking at physical lego gears, the arc where the angular motion is taking place between gears is the mean between the tip radius and inner radius.
+	1412: NOTE: There are 57 gears including the variations.
+	1531: Add the crown tooth and corrections last to the library.
+	1925: Got a functional dictionary and extract first two items.
+	1940: Stopped with the step back to retrieve the next ratio. May have to make a list within.
+	2020: Can't sort the solution now. Later.
+23.08.2012: Here to play around and relax.
+	2009: Got the solution sorted! :-) She gives an output for a gear with the Panhellenic pointer. 360 degree input, 78 and some degree output.
+	2021: Well, not EXACTLY sorted ;-(
+24.08.2012: Have the problem sorted.
+	1005: The numbers were not the problem, just a field getting overwritten for the sequential gears. Now want to add the planetary gear sets.
+	1053: Have added all five sets of planetary gears, some twenty more gears. There is a total of 65 gears in the planetarium, not including the calibration, sanity, and 
+		"packaged" gear sets.
+	1738: The only two projects to be concerned about in the near future is this and the neural networks.
+25.08.2012: 
+	902: Adding a boolean SharesShaft if a gear is driven by the shaft instead of the teeth.
+	1055: It is sorted the movements, as far as I can tell by my imagination. How do I test the system for accuracy?
+	1056: How about building a lego model with the approximate gear arrangments and find a way to measure the movement on the last gear?
+	1121: Regardless, how do I ensure the results are correct along the train? How do I insure the correctness of the functional methodology?
+	1141: Am upgrading to VS2010 Ultimate to take advantage of features, like debugger canvas, to manage the objects.
+	1236: It is interesting to create a graphical program that could prove the motions of a disc, to confirm my calculations.
+	1924: Have set up a proof folder with a WPF program with a rotating disc. Taking a break, brain full.
+31.08.2012: With some time on my hands.
+	933: Returning to the SharesShaft process and thinking how the mathematical sequence will flow.
+	1111: I see that by using the meam ratio instead of the plain tip radius results in significant changes of movement. This project will use the mean measurements,
+		given that when gears (ideally) mesh, their angular motion is coupled to the mean distance between them. This can be played with later.
+	1528: Have changed to the mean gear radius numbers which should provide greater accuracy in the output numbers--at least this is the assumption.
+18.09.2012: Back after a work/holiday period.
+	842: The break with this work had me thinking on it. What was most profound was visiting sites in Venice and thinking about the mechanism. The feeling of time and 
+		the vastness separating me and what came before has only begun. Returning to the code to see how to finish this in a way to generate the paper in the first week 
+		of October.
+	1040: I am quite impressed by the quality of the code and what it accomplishes in an elegant and compact manner. I think the emphasis is communication of the 
+		algorithm and what is the end-game as far as the paper is concerned.
+	1042: There is still a correctness issue on the movement of gears which share a shaft. I have been musing if a physical model will help.
+06.10.2012: I think it best to finish this work and get the paper in publication before continuing with the antenna work.
+	1058: Creating a test next to "FirstActualGearTrain" to set up a test based on a physical Lego model of a gear train sharing a shaft. This way can test each of the methods and set 
+		a means to compare "correctness".
+	1100: I have a lego model, consisting of five gears and three pointers. In order from the driving input at the crown gear, the subsequent gears have the dimensions in L notation, Lego since 
+		it is more advantagous to take the dimension of the part from the specification instead of measuring it with a caliper. 1 L = 8 mm.
+			a. 24-tooth crown, radius of 1.5L, | r = 12 mm, chord length = 0.125 in (3.175 mm), number of teeth = 24;
+			b. 36-tooth, radius of 2.5L,       | r = 20 mm, chord length = 3.175 mm, number of teeth = 36						--> Pointer;
+			c. 24-tooth, radius of 1.5L,       | r = 12 mm, chord length = 3.175 mm, number of teeth = 24, SharesShaft = true	--> Pointer;
+			d. 24-tooth, radius of 1.5L,       | r = 12 mm, chord length = 3.175 mm, number of teeth = 24, SharesShaft = true;
+			e. 16-tooth, radius of 1L,         | r =  8 mm, chord length = 3.175 mm, number of teeth = 16,						--> Pointer;
+		In terms of the paper, this phyiscal gear train will serve as a calibration of the basic soundness of the algorithm and the calculation it performs.
+	1125: Other parameters can be calculated using the algorithm.
+	1147: Now catalogued, it is ready to go into a test case.
+	1151: First thing is to create C# objects of the physical gears.
+	1238: Have created a successful test comparison of the algorithm and the physical gear train. On inspection, it seems sound but suggest detailed proofs of the SharesShaft scenario.
+	1524: Will create some paper discs to act as indicators for the positions of the gears. Perhaps a new housing is in order.
+07.10.2012: Have constructed the physical model, as described in the previous day's entry which includes paper discs as indicators.
+	1211: Will run a 1/2 turn test.
+	1215: On the physical model, with an input of 180: next gear turns 100 (101.79), next gear (pair) turns 180 (318.29), last gear turns almost 270 (292.28).
+	1642: Need to sort the errors and document the reasons.
+	1706: Have marked in code where the error(s) are most likely hiding.
+08.10.2012:
+	839: Here to make corrections to the algorithm; although the phyiscal model is not here, I have the numbers for the input of 180.
+	934: Found a flaw in the calculation of the chord length, it is better to calculate and note the delta. Will have to change the class to add a ChordDifferential property.
+	942: I cannot seem to recall where the 3.175mm chord length came from.
+	1028: Upon examining the geometric assumptions, found that Proof gear L2 contains 40, not 36 teeth, as shown on the internet. Still have yet to workout the errors in motion.
+02.12.2012:
+	1049: Back to finish this to the point where a paper can be published.
+	1052: Also a goal is to get a Windows (Mobile) Phone with some numbers in display--not fancy clock faces--to chart if it is working. Calibration via connection at periodic times to 
+		update the relativistic components.
+03.12.2012:
+	832: Listened to an interview of an author writing about the mechanism and ordered a used book from same. Have figured the task is to model the divine in action, as opposed to presence,
+		which is the wireless power (aether) work.
+04.12.2012:
+	1328: Have some time ahead of me to work on this.
+	1409: Have refactored the project, to reflect the current amibitions clearly, and created a second class library to contain the movements and checks on those movements. The sin/cos 
+		from a recent Mathematica project can help with the latter.
+	1444: Have completely reorganized the project for clear emphasis.
+	1516: With a clean slate, how do we want to begin to get what is required for the paper? Thinking sun, moon and 235-month calendar with a zodiac to indicate finite time.
+	1715: Have recombined the notes since the project has been organized for the paper.
+	1716: Think the motion is the best place to continue as the flow of the algorithm is what is most interesting for the paper.
+	1918: Got some broken stuff after extensive configuring and refactoring. Let me fix this up first.
+	1919: Question really is: how to I manage all this stuff?
+	1939: Have moved properties for the Gear base class to the class from Functions. Code is more contained and simpler.
+	2023: Have integrated a WinForm to display the input and output degrees of the motion. A good place to get a visualization. I wonder how the original engineers understood this.
+	2105: Have gotten the visualizations set up including the calendar gears desired for the paper. Left off with coding in the real gear train for the displays.
+	2106: At some point, the temporal (time flow) component will be relevant, since there are problems with even simple time-ticks, how should this be addressed?
+16.12.2012:
+	1059: Realized that for all the checking into analog computers married with digital, I have one right here. ;-)
+13.04.2013:
+	955: I think I will resume with the motion tests and take it from there.
+17.04.2013:
+	1805: I believe the basics of the gears plus motions are in order. I can test equality where SharesShaft = true. It should be possible now to write code to assemble the trains for 
+		the moon, sun, and various planets.
+	1807: Tomorrow, National Monument Day, I will be at the National Archaeological Museum in Athens to see the Uhoo Clock. I am on a spritual journey.
+	2037: The internal dictionary is done. Now all one has to do is create the gears and put them in a list.
+	2228: Another bit that needs to be sorted is how to codify the pin-and-slot mechanism.
+	2231: I have added a parameter to the Gear class, Eccentricity since the rotation is distorted by a constant value--the length of the pin travel in the slot.
+	2236: Added a calculation function to set the value for Eccentricity.
+	2246: Have added a bool PinSlot to the Gear class to indicate its usage when determining Motion.
+	2253: Have stopped with the Motion class after adding the place where the Eccentricty will be calculated.
+22.04.2013:
+	1206: Back from holiday, the clock, and to coding. While I have time, want to work here and with Forex.
+	1248: Am working up the moon display and phase from creating lists of gear motions for the various indicators.
+	1249: What are the various group names for the gears, like c1, c2, d2, e2, e5, k1?
+	1320: Have reorganized the gear layout to make more sense of the naming.
+	1357: Am trying gears B0 and Q1, from "gear diagram" picture apart from MB1 and MB2 for simplicity.
+	1403: A gear train is connected and getting an output value. What is next?
+	1406: Assuming the calculation is correct and requiring validation of the flow, next is to add the eccentricity for the pin-and-slot.
+	1408: Will switch now.
+	2046: Back after big success with Automat - Data Display and (backprop) prediction. Want to split up the moon phase and position on two dials and use the differential as a place 
+		to get started with calibration.
+	2128: Now have the solar, lunar position, and lunar phase dials working on a single input. There is now a clear button. How about automating a flowing sequence?
+	2149: Got some super motion sorted. Now see the dials will only go around once! :-( Need to sort it next.

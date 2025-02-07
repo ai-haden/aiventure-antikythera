@@ -1,0 +1,9 @@
+﻿Planetary gear notes:
+
+This data is from Freeth given in the BBC "The two-thousand year-old computer".
+
+Mars, Jupiter, Saturn: Four gears, pin-and-slot mechanism, like the moon arrangment.
+
+The gear receives its momentum from the (inner) gear-meshing of B1-223. The arrangment is epicyclic.
+
+I have estimated Mars, Venus, and Mercury myself, basing the movements of the same architecture as the other planets.

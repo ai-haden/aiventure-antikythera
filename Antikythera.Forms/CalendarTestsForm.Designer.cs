@@ -1,4 +1,6 @@
-﻿namespace Antikythera.Forms
+﻿using FormControls.Dials;
+
+namespace Antikythera.Forms
 {
     partial class CalendarTestsForm
     {

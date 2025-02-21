@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="CalibrationTests.cs" />
     <Compile Include="MotionTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

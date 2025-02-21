@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using System.Windows.Forms;
+using System.Timers;
 
 namespace Antikythera.Position
 {
@@ -33,7 +33,7 @@ namespace Antikythera.Position
             //Ticker.TimeTick += new EventHandler(Ticker_TimeTick);
         }
 
-        void TimerTick(object sender, EventArgs e)
+        void TimerTick(object sender, ElapsedEventArgs e)
         {
             if (Timer.Interval == 1000)
             {
@@ -46,7 +46,7 @@ namespace Antikythera.Position
 
             Timer.Interval = milliseconds;
             Timer.Start();
-            Timer.Tick += new EventHandler(TimerTick);
+            Timer.Elapsed += new ElapsedEventHandler(TimerTick);
         }
 
 
